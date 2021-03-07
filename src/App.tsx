@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { FieldPath, useForm, UseFormRegister, UseFormUnregister } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { BriefFormValues } from './Model/BriefFormValues';
 import TextInput from './Form/TextInput';
 import { FormController } from './Form/Shared';
@@ -30,7 +30,7 @@ const App = () => {
     unregister,
   } = useForm<BriefFormValues>();
 
-  const onSubmit = useCallback(data => console.log('Submit', data), []);
+  const onSubmit = useCallback((data: BriefFormValues) => console.log('Submit', data), []);
 
   const [showName, setShowName] = useState(true);
   const toggleShowName = useCallback(() => {
@@ -47,16 +47,16 @@ const App = () => {
       <Button onClick={toggleShowName}>Toggle</Button>
       <Form onSubmit={handleSubmit(onSubmit)}>
         {true && (
-          <TextInput 
+          <TextInput<'title', BriefFormValues>
             formController={formController}
-            name="title"
+            path="title"
             unregisterOnUnmount={true}
           />
         )}
         {showName && (
-          <Task<BriefFormValues>
+          <Task
             formController={formController}
-            name="task"
+            path="task.0"
             unregisterOnUnmount={true}
           />
         )}

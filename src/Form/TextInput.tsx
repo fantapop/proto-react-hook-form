@@ -1,19 +1,18 @@
 import styled from "@emotion/styled";
-import { ReactNode, useCallback, useEffect, useState } from "react";
-import { FieldPath, FieldValues, UseFormRegister, UseFormUnregister } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { UncontrolledFormFieldProps, useUnregisterOnHide } from "./Shared";
 
-type Props<TFieldValues extends FieldValues> = {
-} & UncontrolledFormFieldProps<TFieldValues>;
+type Props<Name extends string, TFieldValues extends any, ParentPath = void> = {
+} & UncontrolledFormFieldProps<TFieldValues, (ParentPath extends string ? `${ParentPath}.${Name}` : Name)>;
 
 const Input = styled.input`
 
 `;
 
-const TextInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues>) => {
+const TextInput = <Name extends string, TFieldValues extends FieldValues, ParentPath = void>(props: Props<Name, TFieldValues, ParentPath>) => {
   const {
     formController,
-    name,
+    path,
   } = props;
 
   const { register } = formController;
@@ -22,7 +21,7 @@ const TextInput = <TFieldValues extends FieldValues>(props: Props<TFieldValues>)
 
   // register needs to receive 'task.title'
   return (
-    <Input {...register(name)} />
+    <Input {...register(path} />
   );
 }
 

@@ -1,11 +1,10 @@
 import styled from "@emotion/styled";
-import { FieldValues } from "react-hook-form";
-import { BriefFormValues, TaskValue } from "../Model/BriefFormValues";
+import { BriefFormValues } from "../Model/BriefFormValues";
 import { UncontrolledFormFieldProps } from "./Shared";
 import TextInput from "./TextInput";
 
-type Props<TFieldValues extends FieldValues> = {
-} & UncontrolledFormFieldProps<TFieldValues>;
+type Props<TFieldValues extends BriefFormValues> = {
+} & UncontrolledFormFieldProps<TFieldValues, `task.${number}`>;
 
 const TaskContainer = styled.div`
   display: flex;
@@ -13,21 +12,33 @@ const TaskContainer = styled.div`
   border: 1px solid black;
 `;
 
-const Task = <TFieldValues extends FieldValues>(props: Props<TFieldValues>) => {
+const Task = <TFieldValues extends BriefFormValues>(props: Props<TFieldValues>) => {
   const {
     formController,
-    name, // 'task'
+    path,
     unregisterOnUnmount,
   } = props;
 
-  const titleName = `${name}.title` as const;
+  const typePath = `${path}.type` as const;
+  const titlePath = `${path}.title` as const;
+  const descriptionPath = `${path}.description` as const;
 
   return (
     <TaskContainer>
-      Task: {name}
-      <TextInput
+      Task: {path}
+      <TextInput<'type', TFieldValues, typeof path>
         formController={formController}
-        name={titleName}
+        path={typePath}
+        unregisterOnUnmount={unregisterOnUnmount}
+      />
+      <TextInput<'title', TFieldValues, typeof path>
+        formController={formController}
+        path={titlePath}
+        unregisterOnUnmount={unregisterOnUnmount}
+      />
+      <TextInput<'description', TFieldValues, typeof path>
+        formController={formController}
+        path={descriptionPath}
         unregisterOnUnmount={unregisterOnUnmount}
       />
     </TaskContainer>

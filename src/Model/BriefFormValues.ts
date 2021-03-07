@@ -1,4 +1,3 @@
-
 export enum TaskType {
   capture = 'capture',
   share = 'share',
@@ -12,5 +11,5 @@ export type TaskValue = {
 
 export type BriefFormValues = {
   title: string;
-  task: TaskValue;
+  task: TaskValue[];
 };
