@@ -12,13 +12,14 @@ export type UncontrolledFormFieldProps<TFieldValues, Path = FieldPath<TFieldValu
   unregisterOnUnmount?: boolean;
 };
 
-export function useUnregisterOnHide<TFieldValues extends FieldValues, Path>(
+export function useUnregisterOnHide<TFieldValues extends FieldValues, Path = FieldPath<TFieldValues>>(
   props: UncontrolledFormFieldProps<TFieldValues, Path>
 ) {
   const { formController, path, unregisterOnUnmount } = props;
   const { unregister } = formController;
   useEffect(() => {
     // register occurs elsewhere
-    return unregisterOnUnmount ? () => unregister(path) : undefined;
+    const typedPath: any = path
+    return unregisterOnUnmount ? () => unregister(typedPath) : undefined;
   }, []);
 }

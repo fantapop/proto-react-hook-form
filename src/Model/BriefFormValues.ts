@@ -4,6 +4,7 @@ export enum TaskType {
 };
 
 export type TaskValue = {
+  id: string;
   description: string;
   title: string;
   type: TaskType;
@@ -11,5 +12,5 @@ export type TaskValue = {
 
 export type BriefFormValues = {
   title: string;
-  task: TaskValue[];
+  tasks: TaskValue[];
 };

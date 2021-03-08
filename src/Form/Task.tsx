@@ -4,7 +4,8 @@ import { UncontrolledFormFieldProps } from "./Shared";
 import TextInput from "./TextInput";
 
 type Props<TFieldValues extends BriefFormValues> = {
-} & UncontrolledFormFieldProps<TFieldValues, `task.${number}`>;
+  id: string;
+} & UncontrolledFormFieldProps<TFieldValues, `tasks.${number}`>;
 
 const TaskContainer = styled.div`
   display: flex;
@@ -14,6 +15,7 @@ const TaskContainer = styled.div`
 
 const Task = <TFieldValues extends BriefFormValues>(props: Props<TFieldValues>) => {
   const {
+    id,
     formController,
     path,
     unregisterOnUnmount,
@@ -22,10 +24,11 @@ const Task = <TFieldValues extends BriefFormValues>(props: Props<TFieldValues>) 
   const typePath = `${path}.type` as const;
   const titlePath = `${path}.title` as const;
   const descriptionPath = `${path}.description` as const;
+  // console.log('getValues in task was: ', getValues());
 
   return (
     <TaskContainer>
-      Task: {path}
+      Task: {path} ({id})
       <TextInput<'type', TFieldValues, typeof path>
         formController={formController}
         path={typePath}

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FieldValues } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { UncontrolledFormFieldProps, useUnregisterOnHide } from "./Shared";
 
 type Props<Name extends string, TFieldValues extends any, ParentPath = void> = {
@@ -21,7 +21,7 @@ const TextInput = <Name extends string, TFieldValues extends FieldValues, Parent
 
   // register needs to receive 'task.title'
   return (
-    <Input {...register(path} />
+    <Input placeholder={path} {...register(path as unknown as Path<TFieldValues>)} />
   );
 }
 
