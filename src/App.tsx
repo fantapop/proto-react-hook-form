@@ -55,6 +55,12 @@ const App = () => {
     }
   }, [move, tasks]);
 
+  const removeMiddle = useCallback(() => {
+    if (tasks.length) {
+      remove(Math.floor(tasks.length / 2));
+    }
+  }, [remove, tasks]);
+
   const formController: FormController<BriefFormValues> = useMemo(() => ({
     register,
     unregister,
@@ -79,6 +85,7 @@ const App = () => {
       <Button onClick={toggleShowTasks}>Show Tasks</Button>
       <Button onClick={addTask}>Add Task to End</Button>
       <Button onClick={moveLastTaskToFront}>Move Last Task to Front</Button>
+      <Button onClick={removeMiddle}>Remove Middle</Button>
       <Form onSubmit={handleSubmit(onSubmit)}>
         {true && (
           <TextInput<'title', BriefFormValues>
