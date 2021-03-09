@@ -1,25 +1,22 @@
 import { useEffect } from "react";
-import { FieldValues, UseFormRegister, UseFormUnregister, FieldPath, Field } from "react-hook-form";
+import { FieldValues, UseFormRegister, UseFormUnregister, FieldPath, Field, useFormContext } from "react-hook-form";
 
 export type FormController<TFieldValues extends FieldValues> = {
   register: UseFormRegister<TFieldValues>;
   unregister: UseFormUnregister<TFieldValues>;
 };
 
-export type UncontrolledFormFieldProps<TFieldValues, Path = FieldPath<TFieldValues>> = {
-  formController: FormController<TFieldValues>;
-  path: Path;
+export type UncontrolledFormFieldProps = {
   unregisterOnUnmount?: boolean;
+  path: string;
 };
 
-export function useUnregisterOnHide<TFieldValues extends FieldValues, Path = FieldPath<TFieldValues>>(
-  props: UncontrolledFormFieldProps<TFieldValues, Path>
+export function useUnregisterOnHide(
+  props: UncontrolledFormFieldProps
 ) {
-  const { formController, path, unregisterOnUnmount } = props;
-  const { unregister } = formController;
+  const { path, unregisterOnUnmount } = props;
+  const { unregister } = useFormContext();
   useEffect(() => {
-    // register occurs elsewhere
-    const typedPath: any = path
-    return unregisterOnUnmount ? () => unregister(typedPath) : undefined;
+    return unregisterOnUnmount ? () => unregister(path) : undefined;
   }, []);
 }

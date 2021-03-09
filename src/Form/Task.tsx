@@ -1,11 +1,14 @@
+import React from 'react';
 import styled from "@emotion/styled";
-import { BriefFormValues } from "../Model/BriefFormValues";
-import { UncontrolledFormFieldProps } from "./Shared";
+import { useFormContext } from "react-hook-form";
+import { BriefFormValues, TaskValue } from "../Model/BriefFormValues";
 import TextInput from "./TextInput";
+import dottedGet from 'lodash.get';
+import { isNullishCoalesce } from 'typescript';
 
-type Props<TFieldValues extends BriefFormValues> = {
-  id: string;
-} & UncontrolledFormFieldProps<TFieldValues, `tasks.${number}`>;
+type Props = {
+  prefix: string;
+};
 
 const TaskContainer = styled.div`
   display: flex;
@@ -13,34 +16,34 @@ const TaskContainer = styled.div`
   border: 1px solid black;
 `;
 
-const Task = <TFieldValues extends BriefFormValues>(props: Props<TFieldValues>) => {
-  const {
-    id,
-    formController,
-    path,
-    unregisterOnUnmount,
-  } = props;
+const Task = (props: Props) => {
+  const { prefix } = props;
 
-  const typePath = `${path}.type` as const;
-  const titlePath = `${path}.title` as const;
-  const descriptionPath = `${path}.description` as const;
-  // console.log('getValues in task was: ', getValues());
+  const { getValues } = useFormContext();
+  const task: TaskValue | undefined = dottedGet(getValues(), prefix);
+  console.log('task is:', task);
+
+  if (!task) {
+    return null;
+  }
+
+  const unregisterOnUnmount = true;
+  const typePath = `${prefix}.type`;
+  const titlePath = `${prefix}.title`;
+  const descriptionPath = `${prefix}.description`;
 
   return (
     <TaskContainer>
-      Task: {path} ({id})
-      <TextInput<'type', TFieldValues, typeof path>
-        formController={formController}
+      Task: {prefix} ({task.id})
+      <TextInput
         path={typePath}
         unregisterOnUnmount={unregisterOnUnmount}
       />
-      <TextInput<'title', TFieldValues, typeof path>
-        formController={formController}
+      <TextInput
         path={titlePath}
         unregisterOnUnmount={unregisterOnUnmount}
       />
-      <TextInput<'description', TFieldValues, typeof path>
-        formController={formController}
+      <TextInput
         path={descriptionPath}
         unregisterOnUnmount={unregisterOnUnmount}
       />
